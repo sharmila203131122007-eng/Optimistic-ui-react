@@ -1,0 +1,52 @@
+
+import React, { useState } from "react";
+
+function App() {
+  const [liked, setLiked] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleLike = async () => {
+    const previousLiked = liked;
+
+    // Update UI immediately
+    setLiked(!previousLiked);
+    setLoading(true);
+
+    try {
+      // Simulate API request
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      });
+
+      console.log("Like updated successfully");
+    } catch (error) {
+      // Rollback if request fails
+      setLiked(previousLiked);
+      console.log("Request failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="container">
+      <h1>Optimistic UI</h1>
+
+      <h2>Like This Post</h2>
+
+      <button onClick={handleLike}>
+        {liked ? "❤️ Liked" : "🤍 Like"}
+      </button>
+
+      <p>
+        {liked ? "You liked this post!" : "No likes yet"}
+      </p>
+
+      {loading && <p>Updating...</p>}
+    </div>
+  );
+}
+
+export default App;
